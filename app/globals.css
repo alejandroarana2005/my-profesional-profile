@@ -136,3 +136,34 @@ body::before {
   box-shadow: 0 8px 32px rgba(37, 99, 235, 0.12);
   border-color: rgba(59, 130, 246, 0.4);
 }
+
+
+/* Light mode overrides */
+.light body {
+  background-color: #F8F9FC;
+  color: #0D0E14;
+}
+.light nav {
+  background-color: rgba(248, 249, 252, 0.8);
+}
+.light .bg-ink-card,
+.light [class*="bg-ink-card"] {
+  background-color: #FFFFFF;
+}
+.light [class*="border-ink-border"] {
+  border-color: #E2E6EF;
+}
+.light .text-slate-text,
+.light [class*="text-slate-text"] {
+  color: #475569;
+}
+.light .text-slate-muted,
+.light [class*="text-slate-muted"] {
+  color: #94A3B8;
+}
+.light [class*="text-white"] {
+  color: #0D0E14;
+}
+.light [class*="bg-ink-border"] {
+  background-color: #E2E6EF;
+}

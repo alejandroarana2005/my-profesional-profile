@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-
+import { useTheme } from "next-themes";
+import { useState } from "react";
 // ─── Data ───────────────────────────────────────────────────────────────────
 
 const technicalSkills = [
@@ -87,6 +88,11 @@ function useReveal() {
 // ─── Navbar ──────────────────────────────────────────────────────────────────
 
 function Navbar() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-5 border-b border-ink-border/50 backdrop-blur-xl bg-ink/70">
       <span className="font-display text-xl font-light tracking-widest text-white/90">
@@ -99,21 +105,37 @@ function Navbar() {
           { label: "Certificados", href: "#certificados" },
           { label: "Contacto", href: "#contacto" },
         ].map((item) => (
-          <a
-            key={item.label}
-            href={item.href}
-            className="underline-animate hover:text-white transition-colors duration-200"
-          >
+          <a key={item.label} href={item.href} className="underline-animate hover:text-white transition-colors duration-200">
             {item.label}
           </a>
         ))}
       </div>
-      <a
-        href="mailto:alejandro.arana@estudiantesunibague.edu.co"
-        className="hidden sm:block text-xs font-body font-medium px-4 py-2 rounded-full border border-blue-primary/50 text-blue-glow hover:bg-blue-primary/10 transition-all duration-200"
-      >
-        Contactar
-      </a>
+      <div className="flex items-center gap-3">
+        <button
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          className="w-9 h-9 flex items-center justify-center rounded-full border border-ink-border hover:border-blue-primary/50 text-slate-text hover:text-white transition-all duration-200"
+          aria-label="Alternar tema"
+        >
+          {/* Renderiza el ícono solo tras montar en cliente */}
+          {mounted && (theme === "dark" ? (
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+            </svg>
+          ) : (
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          ))}
+        </button>
+        
+        <a
+          href="mailto:alejandro.arana@estudiantesunibague.edu.co"
+          className="hidden sm:block text-xs font-body font-medium px-4 py-2 rounded-full border border-blue-primary/50 text-blue-glow hover:bg-blue-primary/10 transition-all duration-200"
+        >
+          Contactar
+        </a>
+      </div>
     </nav>
   );
 }
