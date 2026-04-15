@@ -8,12 +8,24 @@ import { useState } from "react";
 const technicalSkills = [
   { name: "Redes", category: "Infraestructura", label: "Intermedio" },
   { name: "Programación", category: "Desarrollo", label: "Intermedio" },
-  { name: "JavaScript / Python (OOP)", category: "Backend", label: "Intermedio" },
+  {
+    name: "JavaScript / Python (OOP)",
+    category: "Backend",
+    label: "Intermedio",
+  },
   { name: "SQL & NoSQL", category: "Bases de Datos", label: "Básico" },
   { name: "Agentes Inteligentes (CNN)", category: "IA", label: "Aplicado" },
   { name: "Mantenimiento de Equipos", category: "Hardware", label: "Básico" },
-  { name: "Diseño Gráfico & Multimedia", category: "Diseño", label: "Intermedio" },
-  { name: "Scrum / Gestión Ágil", category: "Metodologías", label: "Certificado" },
+  {
+    name: "Diseño Gráfico & Multimedia",
+    category: "Diseño",
+    label: "Intermedio",
+  },
+  {
+    name: "Scrum / Gestión Ágil",
+    category: "Metodologías",
+    label: "Certificado",
+  },
 ];
 
 const softSkills = [
@@ -29,43 +41,49 @@ const softSkills = [
   { name: "Ética Profesional", icon: "◇" },
 ];
 
+const categoryColors: Record<string, string> = {
+  Infraestructura: "bg-purple-500/10 text-purple-glow border-purple-500/20",
+  Desarrollo: "bg-blue-500/10 text-blue-glow border-blue-500/20",
+  Backend: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20",
+  "Bases de Datos": "bg-green-500/10 text-green-400 border-green-500/20",
+  IA: "bg-orange-500/10 text-orange-400 border-orange-500/20",
+  Hardware: "bg-red-500/10 text-red-400 border-red-500/20",
+  Diseño: "bg-pink-500/10 text-pink-400 border-pink-500/20",
+  Metodologías: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
+};
+
 const certifications = [
   {
     title: "Scrum Fundamentals Certified",
     issuer: "SCRUMstudy",
     icon: "⚡",
     color: "from-rose-500/20 to-rose-500/5 border-rose-500/25 text-rose-400",
+    url: "https://www.scrumstudy.com/certification/verify?type=SFC&number=1129545",
   },
   {
     title: "AWS Cloud Foundations",
     issuer: "AWS Academy",
     icon: "☁",
-    color: "from-amber-500/20 to-amber-500/5 border-amber-500/25 text-amber-400",
+    color:
+      "from-amber-500/20 to-amber-500/5 border-amber-500/25 text-amber-400",
+    url: "https://www.credly.com/badges/8f2d01c6-4eb3-466d-847a-4b64b9259d55/public_url",
   },
   {
     title: "Networking Basics",
     issuer: "Cisco",
     icon: "🌐",
     color: "from-blue-500/20 to-blue-500/5 border-blue-500/25 text-blue-400",
+    url: "https://www.credly.com/badges/a98a0c72-a5a7-4428-ad07-941c0b8eeab3",
   },
   {
     title: "Certificado de Inglés B2",
     issuer: "Nivel Independiente",
     icon: "EN",
-    color: "from-emerald-500/20 to-emerald-500/5 border-emerald-500/25 text-emerald-400",
+    color:
+      "from-emerald-500/20 to-emerald-500/5 border-emerald-500/25 text-emerald-400",
+    url: null,
   },
 ];
-
-const categoryColors: Record<string, string> = {
-  Infraestructura: "bg-amber-500/10 text-amber-400 border-amber-500/25",
-  Desarrollo: "bg-cyan-500/10 text-cyan-400 border-cyan-500/25",
-  Backend: "bg-violet-500/10 text-violet-400 border-violet-500/25",
-  "Bases de Datos": "bg-emerald-500/10 text-emerald-400 border-emerald-500/25",
-  IA: "bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/25",
-  Hardware: "bg-orange-500/10 text-orange-400 border-orange-500/25",
-  Diseño: "bg-pink-500/10 text-pink-400 border-pink-500/25",
-  Metodologías: "bg-rose-500/10 text-rose-400 border-rose-500/25",
-};
 
 // ─── Intersection Observer Hook ──────────────────────────────────────────────
 
@@ -78,7 +96,7 @@ function useReveal() {
           if (e.isIntersecting) e.target.classList.add("visible");
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
     els.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
@@ -105,7 +123,11 @@ function Navbar() {
           { label: "Certificados", href: "#certificados" },
           { label: "Contacto", href: "#contacto" },
         ].map((item) => (
-          <a key={item.label} href={item.href} className="underline-animate hover:text-white transition-colors duration-200">
+          <a
+            key={item.label}
+            href={item.href}
+            className="underline-animate hover:text-white transition-colors duration-200"
+          >
             {item.label}
           </a>
         ))}
@@ -117,18 +139,36 @@ function Navbar() {
           aria-label="Alternar tema"
         >
           {/* Renderiza el ícono solo tras montar en cliente */}
-          {mounted && (theme === "dark" ? (
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-            </svg>
-          ) : (
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-            </svg>
-          ))}
+          {mounted &&
+            (theme === "dark" ? (
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+              </svg>
+            ) : (
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            ))}
         </button>
-        
         <a
           href="mailto:alejandro.arana@estudiantesunibague.edu.co"
           className="hidden sm:block text-xs font-body font-medium px-4 py-2 rounded-full border border-blue-primary/50 text-blue-glow hover:bg-blue-primary/10 transition-all duration-200"
@@ -161,8 +201,6 @@ function Hero() {
       />
 
       <div className="relative max-w-4xl w-full text-center z-10">
-      
-
         <h1
           className="font-display text-6xl sm:text-7xl lg:text-8xl font-light leading-[1.05] tracking-tight mb-4 animate-fade-up"
           style={{ animationDelay: "0.1s" }}
@@ -202,6 +240,17 @@ function Hero() {
           >
             Contactar →
           </a>
+          <a
+            href="https://github.com/alejandroarana2005"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-white/10 hover:border-blue-primary/50 text-white/70 hover:text-white text-sm font-body font-light transition-all duration-200"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z" />
+            </svg>
+            GitHub
+          </a>
         </div>
       </div>
     </section>
@@ -215,7 +264,6 @@ function About() {
     <section id="sobre-mí" className="relative py-28 px-6">
       <div className="max-w-5xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-
           {/* Left: text */}
           <div className="reveal">
             <p className="font-body text-xs text-blue-glow tracking-widest uppercase mb-4 font-medium">
@@ -223,26 +271,35 @@ function About() {
             </p>
             <div className="divider mb-6" />
             <h2 className="font-display text-4xl sm:text-5xl font-light leading-tight mb-6">
-              Construyendo soluciones<br />
+              Construyendo soluciones
+              <br />
               <span className="italic text-gradient">con propósito</span>
             </h2>
             <p className="font-body text-slate-text font-light leading-relaxed mb-5">
               Soy Alejandro, graduado como{"  "}
-              <span className="text-white/90">Bachiller Técnico en Sistemas</span> y actualmente
-              estudiante de <span className="text-white/90">Ingeniería de Sistemas</span>. Me apasiona
-              construir software funcional, limpio y con impacto real.
+              <span className="text-white/90">
+                Bachiller Técnico en Sistemas
+              </span>{" "}
+              y actualmente estudiante de{" "}
+              <span className="text-white/90">Ingeniería de Sistemas</span>. Me
+              apasiona construir software funcional, limpio y con impacto real.
             </p>
             <p className="font-body text-slate-text font-light leading-relaxed mb-5">
               Tengo experiencia en{" "}
-              <span className="text-blue-glow">programación orientada a objetos</span> con JavaScript y
-              Python, y he trabajado en la creación de{" "}
-              <span className="text-blue-glow">agentes inteligentes</span> y redes neuronales para
-              clasificación de imágenes.
+              <span className="text-blue-glow">
+                programación orientada a objetos
+              </span>{" "}
+              con JavaScript y Python, y he trabajado en la creación de{" "}
+              <span className="text-blue-glow">agentes inteligentes</span> y
+              redes neuronales para clasificación de imágenes.
             </p>
             <p className="font-body text-slate-text font-light leading-relaxed mb-8">
               Combino habilidades técnicas con formación en{" "}
-              <span className="text-blue-glow">diseño gráfico y multimedia</span>, lo que me permite
-              desarrollar productos completos, desde el backend hasta la interfaz visual.
+              <span className="text-blue-glow">
+                diseño gráfico y multimedia
+              </span>
+              , lo que me permite desarrollar productos completos, desde el
+              backend hasta la interfaz visual.
             </p>
 
             <div className="flex flex-wrap gap-2">
@@ -284,10 +341,14 @@ function About() {
                   Idiomas
                 </p>
                 <div className="flex items-center gap-3">
-                  <span className="font-body text-white/90 text-sm">Español</span>
+                  <span className="font-body text-white/90 text-sm">
+                    Español
+                  </span>
                   <span className="text-slate-muted text-xs">Nativo</span>
                   <span className="mx-2 text-ink-border">·</span>
-                  <span className="font-body text-white/90 text-sm">Inglés</span>
+                  <span className="font-body text-white/90 text-sm">
+                    Inglés
+                  </span>
                   <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
                     B2
                   </span>
@@ -314,8 +375,12 @@ function About() {
                   key={s.label}
                   className="card-hover text-center p-4 rounded-xl border border-ink-border bg-ink-card"
                 >
-                  <p className="font-display text-3xl font-light text-gradient">{s.n}</p>
-                  <p className="text-xs font-body text-slate-muted mt-1">{s.label}</p>
+                  <p className="font-display text-3xl font-light text-gradient">
+                    {s.n}
+                  </p>
+                  <p className="text-xs font-body text-slate-muted mt-1">
+                    {s.label}
+                  </p>
                 </div>
               ))}
             </div>
@@ -330,7 +395,10 @@ function About() {
 
 function Skills() {
   return (
-    <section id="habilidades" className="relative py-28 px-6 border-t border-ink-border/50">
+    <section
+      id="habilidades"
+      className="relative py-28 px-6 border-t border-ink-border/50"
+    >
       <div className="absolute inset-0 bg-gradient-to-b from-ink-card/30 to-transparent pointer-events-none" />
 
       <div className="relative max-w-5xl mx-auto">
@@ -366,7 +434,9 @@ function Skills() {
                   >
                     {skill.category}
                   </span>
-                  <span className="text-sm font-body font-medium text-white/90">{skill.name}</span>
+                  <span className="text-sm font-body font-medium text-white/90">
+                    {skill.name}
+                  </span>
                 </div>
                 <span className="text-[10px] font-body px-2 py-0.5 rounded-full bg-ink-border text-slate-muted shrink-0">
                   {skill.label}
@@ -387,7 +457,9 @@ function Skills() {
               className="card-hover flex flex-col items-center gap-2 p-4 rounded-2xl border border-ink-border bg-ink-card text-center"
             >
               <span className="text-blue-glow text-sm">{skill.icon}</span>
-              <span className="text-xs font-body text-slate-text leading-snug">{skill.name}</span>
+              <span className="text-xs font-body text-slate-text leading-snug">
+                {skill.name}
+              </span>
             </div>
           ))}
         </div>
@@ -400,7 +472,10 @@ function Skills() {
 
 function Certifications() {
   return (
-    <section id="certificados" className="relative py-28 px-6 border-t border-ink-border/50">
+    <section
+      id="certificados"
+      className="relative py-28 px-6 border-t border-ink-border/50"
+    >
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16 reveal">
           <p className="font-body text-xs text-blue-glow tracking-widest uppercase mb-4 font-medium">
@@ -408,23 +483,34 @@ function Certifications() {
           </p>
           <div className="divider mx-auto mb-6" />
           <h2 className="font-display text-4xl sm:text-5xl font-light leading-tight">
-            Formación{" "}
-            <span className="italic text-gradient">verificada</span>
+            Formación <span className="italic text-gradient">verificada</span>
           </h2>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 stagger-children">
           {certifications.map((cert) => (
-            <div
+            <a
               key={cert.title}
-              className={`reveal card-hover p-6 rounded-2xl border bg-gradient-to-br ${cert.color}`}
+              href={cert.url ?? undefined}
+              target={cert.url ? "_blank" : undefined}
+              rel={cert.url ? "noopener noreferrer" : undefined}
+              className={`reveal card-hover p-6 rounded-2xl border bg-gradient-to-br ${cert.color} ${cert.url ? "cursor-pointer" : "cursor-default"} block`}
             >
-              <div className="text-2xl mb-4 font-body font-light">{cert.icon}</div>
+              <div className="text-2xl mb-4 font-body font-light">
+                {cert.icon}
+              </div>
               <p className="font-body font-medium text-white/90 text-sm mb-1 leading-snug">
                 {cert.title}
               </p>
-              <p className="font-body text-xs text-slate-muted">{cert.issuer}</p>
-            </div>
+              <p className="font-body text-xs text-slate-muted">
+                {cert.issuer}
+              </p>
+              {cert.url && (
+                <p className="font-body text-[10px] text-slate-muted mt-3 flex items-center gap-1 opacity-60">
+                  Verificar →
+                </p>
+              )}
+            </a>
           ))}
         </div>
       </div>
@@ -436,16 +522,19 @@ function Certifications() {
 
 function Contact() {
   return (
-    <section id="contacto" className="relative py-28 px-6 border-t border-ink-border/50">
+    <section
+      id="contacto"
+      className="relative py-28 px-6 border-t border-ink-border/50"
+    >
       <div className="max-w-2xl mx-auto text-center reveal">
         <p className="font-body text-xs text-blue-glow tracking-widest uppercase mb-4 font-medium">
           004 — Contacto
         </p>
         <div className="divider mx-auto mb-6" />
-    
+
         <p className="font-body text-slate-text font-light leading-relaxed mb-12">
-          Estoy abierto a proyectos académicos, colaboraciones técnicas
-          y oportunidades de prácticas profesionales.
+          Estoy abierto a proyectos académicos, colaboraciones técnicas y
+          oportunidades de prácticas profesionales.
         </p>
 
         <a
@@ -453,24 +542,50 @@ function Contact() {
           className="group inline-flex items-center gap-4 p-6 rounded-2xl border border-ink-border bg-ink-card hover:border-blue-primary/40 hover:bg-blue-primary/5 transition-all duration-300 w-full max-w-md"
         >
           <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-blue-primary/10 border border-blue-primary/20 text-blue-glow shrink-0 group-hover:bg-blue-primary/20 transition-colors">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <rect width="20" height="16" x="2" y="4" rx="2" />
               <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
             </svg>
           </div>
           <div className="text-left">
-            <p className="text-xs font-body text-slate-muted uppercase tracking-widest mb-1">Email</p>
+            <p className="text-xs font-body text-slate-muted uppercase tracking-widest mb-1">
+              Email
+            </p>
             <p className="text-sm font-body font-medium text-white/90 underline-animate">
               alejandro.arana@estudiantesunibague.edu.co
             </p>
           </div>
-          <svg className="ml-auto text-slate-muted group-hover:text-blue-glow transition-colors shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            className="ml-auto text-slate-muted group-hover:text-blue-glow transition-colors shrink-0"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </a>
 
         <div className="mt-6 flex items-center justify-center gap-2 text-xs font-body text-slate-muted">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
             <circle cx="12" cy="9" r="2.5" />
           </svg>
