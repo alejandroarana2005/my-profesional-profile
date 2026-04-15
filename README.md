@@ -1,25 +1,21 @@
-# Alejandro Arana Fernández — Perfil Digital
+# Alejandro Arana Fernández  2220232039
+# Perfil Digital como landing page con TailWind y Next.js
 
-Landing page personal construida con **Next.js 14** y **Tailwind CSS**.
 
-## 🚀 Inicio rápido
+##  Inicio rápido
 
-```bash
 # 1. Instalar dependencias
 npm install
 
 # 2. Correr en modo desarrollo
 npm run dev
-```
 
 Abre [http://localhost:3000](http://localhost:3000) en el navegador.
 
-## 🏗️ Build de producción
+##  Build de producción
 
-```bash
 npm run build
 npm start
-```
 
 ## 📁 Estructura
 

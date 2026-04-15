@@ -1,31 +1,68 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 // ─── Data ───────────────────────────────────────────────────────────────────
 
-const skills = [
-  { name: "Python", level: 75, category: "Backend" },
-  { name: "Java", level: 65, category: "Backend" },
-  { name: "JavaScript", level: 70, category: "Frontend" },
-  { name: "Django", level: 68, category: "Framework" },
-  { name: "SQL / NoSQL", level: 72, category: "Bases de Datos" },
-  { name: "Redes (Cisco)", level: 60, category: "Infraestructura" },
-  { name: "Scrum Master", level: 80, category: "Metodologías" },
+const technicalSkills = [
+  { name: "Redes", category: "Infraestructura", label: "Intermedio" },
+  { name: "Programación", category: "Desarrollo", label: "Intermedio" },
+  { name: "JavaScript / Python (OOP)", category: "Backend", label: "Intermedio" },
+  { name: "SQL & NoSQL", category: "Bases de Datos", label: "Básico" },
+  { name: "Agentes Inteligentes (CNN)", category: "IA", label: "Aplicado" },
+  { name: "Mantenimiento de Equipos", category: "Hardware", label: "Básico" },
+  { name: "Diseño Gráfico & Multimedia", category: "Diseño", label: "Intermedio" },
+  { name: "Scrum / Gestión Ágil", category: "Metodologías", label: "Certificado" },
+];
+
+const softSkills = [
+  { name: "Liderazgo de Proyectos", icon: "◆" },
+  { name: "Comunicación Asertiva", icon: "◇" },
+  { name: "Trabajo en Equipo", icon: "◆" },
+  { name: "Pensamiento Crítico", icon: "◇" },
+  { name: "Adaptabilidad", icon: "◆" },
+  { name: "Creatividad", icon: "◇" },
+  { name: "Inteligencia Emocional", icon: "◆" },
+  { name: "Resolución de Conflictos", icon: "◇" },
+  { name: "Gestión del Tiempo", icon: "◆" },
+  { name: "Ética Profesional", icon: "◇" },
 ];
 
 const certifications = [
-  { title: "Cisco Networking Essentials", icon: "🌐", issuer: "Cisco" },
-  { title: "Scrum Master Certified", icon: "⚡", issuer: "SCRUMstudy" },
-  { title: "Técnico en Sistemas", icon: "💻", issuer: "SENA / Instituto Técnico" },
+  {
+    title: "Scrum Fundamentals Certified",
+    issuer: "SCRUMstudy",
+    icon: "⚡",
+    color: "from-rose-500/20 to-rose-500/5 border-rose-500/25 text-rose-400",
+  },
+  {
+    title: "AWS Cloud Foundations",
+    issuer: "AWS Academy",
+    icon: "☁",
+    color: "from-amber-500/20 to-amber-500/5 border-amber-500/25 text-amber-400",
+  },
+  {
+    title: "Networking Basics",
+    issuer: "Cisco",
+    icon: "🌐",
+    color: "from-blue-500/20 to-blue-500/5 border-blue-500/25 text-blue-400",
+  },
+  {
+    title: "Certificado de Inglés B2",
+    issuer: "Nivel Independiente",
+    icon: "EN",
+    color: "from-emerald-500/20 to-emerald-500/5 border-emerald-500/25 text-emerald-400",
+  },
 ];
 
 const categoryColors: Record<string, string> = {
-  Backend: "bg-blue-primary/15 text-blue-glow border-blue-primary/30",
-  Frontend: "bg-cyan-500/10 text-cyan-400 border-cyan-500/25",
-  Framework: "bg-violet-500/10 text-violet-400 border-violet-500/25",
-  "Bases de Datos": "bg-emerald-500/10 text-emerald-400 border-emerald-500/25",
   Infraestructura: "bg-amber-500/10 text-amber-400 border-amber-500/25",
+  Desarrollo: "bg-cyan-500/10 text-cyan-400 border-cyan-500/25",
+  Backend: "bg-violet-500/10 text-violet-400 border-violet-500/25",
+  "Bases de Datos": "bg-emerald-500/10 text-emerald-400 border-emerald-500/25",
+  IA: "bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/25",
+  Hardware: "bg-orange-500/10 text-orange-400 border-orange-500/25",
+  Diseño: "bg-pink-500/10 text-pink-400 border-pink-500/25",
   Metodologías: "bg-rose-500/10 text-rose-400 border-rose-500/25",
 };
 
@@ -37,12 +74,10 @@ function useReveal() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("visible");
-          }
+          if (e.isIntersecting) e.target.classList.add("visible");
         });
       },
-      { threshold: 0.12 }
+      { threshold: 0.1 }
     );
     els.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
@@ -58,13 +93,18 @@ function Navbar() {
         AA<span className="text-blue-bright">.</span>
       </span>
       <div className="hidden sm:flex items-center gap-8 font-body text-sm text-slate-text font-light">
-        {["Sobre mí", "Habilidades", "Contacto"].map((item) => (
+        {[
+          { label: "Sobre mí", href: "#sobre-mí" },
+          { label: "Habilidades", href: "#habilidades" },
+          { label: "Certificados", href: "#certificados" },
+          { label: "Contacto", href: "#contacto" },
+        ].map((item) => (
           <a
-            key={item}
-            href={`#${item.toLowerCase().replace(" ", "-")}`}
+            key={item.label}
+            href={item.href}
             className="underline-animate hover:text-white transition-colors duration-200"
           >
-            {item}
+            {item.label}
           </a>
         ))}
       </div>
@@ -83,47 +123,51 @@ function Navbar() {
 function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-20 overflow-hidden">
-      {/* Background glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-hero-gradient pointer-events-none" />
-
-      {/* Decorative grid lines */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.03]"
         style={{
           backgroundImage:
             "linear-gradient(rgba(59,130,246,1) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,1) 1px, transparent 1px)",
           backgroundSize: "64px 64px",
         }}
       />
-
-      {/* Floating orb */}
       <div className="absolute top-1/3 right-[10%] w-56 h-56 rounded-full opacity-[0.04] bg-blue-bright blur-3xl animate-float pointer-events-none" />
-      <div className="absolute bottom-1/4 left-[8%] w-32 h-32 rounded-full opacity-[0.06] bg-blue-primary blur-2xl animate-float pointer-events-none" style={{ animationDelay: "3s" }} />
+      <div
+        className="absolute bottom-1/4 left-[8%] w-32 h-32 rounded-full opacity-[0.06] bg-blue-primary blur-2xl animate-float pointer-events-none"
+        style={{ animationDelay: "3s" }}
+      />
 
       <div className="relative max-w-4xl w-full text-center z-10">
-        {/* Tag */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-primary/30 bg-blue-primary/8 text-blue-glow text-xs font-body font-medium tracking-wider mb-8 animate-fade-in">
-          <span className="w-1.5 h-1.5 rounded-full bg-blue-bright animate-pulse-slow" />
-          Disponible para proyectos & colaboraciones
-        </div>
+      
 
-        {/* Name */}
-        <h1 className="font-display text-6xl sm:text-7xl lg:text-8xl font-light leading-[1.05] tracking-tight mb-4 animate-fade-up" style={{ animationDelay: "0.1s" }}>
+        <h1
+          className="font-display text-6xl sm:text-7xl lg:text-8xl font-light leading-[1.05] tracking-tight mb-4 animate-fade-up"
+          style={{ animationDelay: "0.1s" }}
+        >
           Alejandro
           <br />
           <span className="italic text-gradient">Arana</span>
           <span className="text-white/80"> Fernández</span>
         </h1>
 
-        {/* Role */}
-        <p className="font-body text-base sm:text-lg text-slate-text font-light tracking-wide mb-3 animate-fade-up" style={{ animationDelay: "0.25s" }}>
-          Estudiante de Ingeniería de Sistemas · 6.º Semestre
+        <p
+          className="font-body text-base sm:text-lg text-slate-text font-light tracking-wide mb-3 animate-fade-up"
+          style={{ animationDelay: "0.25s" }}
+        >
+          Estudiante de Ingeniería de Sistemas · Técnico en Sistemas
         </p>
-        <p className="font-body text-sm text-slate-muted tracking-widest uppercase mb-10 animate-fade-up" style={{ animationDelay: "0.35s" }}>
-          Técnico en Sistemas · Scrum Master Certificado · Cisco Certified
+        <p
+          className="font-body text-sm text-slate-muted tracking-widest uppercase mb-10 animate-fade-up"
+          style={{ animationDelay: "0.35s" }}
+        >
+          Scrum Certified · AWS · Cisco · Inglés B2
         </p>
 
-        {/* CTAs */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up" style={{ animationDelay: "0.45s" }}>
+        <div
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up"
+          style={{ animationDelay: "0.45s" }}
+        >
           <a
             href="#habilidades"
             className="px-8 py-3.5 rounded-full bg-blue-primary hover:bg-blue-bright text-white text-sm font-body font-medium transition-all duration-200 glow-blue hover:scale-[1.02]"
@@ -137,12 +181,6 @@ function Hero() {
             Contactar →
           </a>
         </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-fade-in" style={{ animationDelay: "1s" }}>
-        <span className="text-xs font-body text-slate-muted tracking-widest uppercase">Scroll</span>
-        <div className="w-px h-10 bg-gradient-to-b from-blue-primary to-transparent" />
       </div>
     </section>
   );
@@ -167,20 +205,33 @@ function About() {
               <span className="italic text-gradient">con propósito</span>
             </h2>
             <p className="font-body text-slate-text font-light leading-relaxed mb-5">
-              Soy Alejandro, estudiante de sexto semestre de{" "}
-              <span className="text-white/90">Ingeniería de Sistemas</span> con formación técnica previa en sistemas.
-              Me apasiona construir software funcional, limpio y con impacto real.
+              Soy Alejandro, graduado como{"  "}
+              <span className="text-white/90">Bachiller Técnico en Sistemas</span> y actualmente
+              estudiante de <span className="text-white/90">Ingeniería de Sistemas</span>. Me apasiona
+              construir software funcional, limpio y con impacto real.
+            </p>
+            <p className="font-body text-slate-text font-light leading-relaxed mb-5">
+              Tengo experiencia en{" "}
+              <span className="text-blue-glow">programación orientada a objetos</span> con JavaScript y
+              Python, y he trabajado en la creación de{" "}
+              <span className="text-blue-glow">agentes inteligentes</span> y redes neuronales para
+              clasificación de imágenes.
             </p>
             <p className="font-body text-slate-text font-light leading-relaxed mb-8">
-              Cuento con certificaciones en{" "}
-              <span className="text-blue-glow">Scrum Master</span> y{" "}
-              <span className="text-blue-glow">Redes Cisco</span>, lo que me permite desenvolverme tanto
-              en el desarrollo técnico como en la gestión ágil de proyectos.
+              Combino habilidades técnicas con formación en{" "}
+              <span className="text-blue-glow">diseño gráfico y multimedia</span>, lo que me permite
+              desarrollar productos completos, desde el backend hasta la interfaz visual.
             </p>
 
-            {/* Chips */}
             <div className="flex flex-wrap gap-2">
-              {["Desarrollo de Software", "Gestión Ágil", "Bases de Datos", "Redes"].map((tag) => (
+              {[
+                "Desarrollo de Software",
+                "Inteligencia Artificial",
+                "Redes",
+                "Diseño Gráfico",
+                "Gestión Ágil",
+                "Bases de Datos",
+              ].map((tag) => (
                 <span
                   key={tag}
                   className="px-3 py-1 text-xs font-body font-medium border border-ink-border text-slate-text rounded-full bg-ink-card"
@@ -191,29 +242,51 @@ function About() {
             </div>
           </div>
 
-          {/* Right: cards */}
-          <div className="reveal grid grid-cols-1 gap-4 stagger-children">
-            {certifications.map((cert) => (
-              <div
-                key={cert.title}
-                className="reveal card-hover flex items-center gap-4 p-5 rounded-2xl border border-ink-border bg-ink-card"
-              >
-                <div className="w-11 h-11 flex items-center justify-center rounded-xl bg-blue-primary/10 border border-blue-primary/20 text-xl shrink-0">
-                  {cert.icon}
-                </div>
-                <div>
-                  <p className="text-sm font-body font-medium text-white/90">{cert.title}</p>
-                  <p className="text-xs font-body text-slate-muted mt-0.5">{cert.issuer}</p>
+          {/* Right: stats */}
+          <div className="reveal">
+            <div className="p-8 rounded-3xl border border-ink-border bg-ink-card space-y-6 mb-6">
+              <div>
+                <p className="text-xs font-body text-slate-muted uppercase tracking-widest mb-2">
+                  Formación
+                </p>
+                <p className="font-body text-white/90 text-sm leading-relaxed">
+                  Bachiller Técnico en Sistemas
+                </p>
+                <p className="font-body text-slate-text text-sm leading-relaxed">
+                  Ingeniería de Sistemas — En curso
+                </p>
+              </div>
+              <div className="h-px bg-ink-border" />
+              <div>
+                <p className="text-xs font-body text-slate-muted uppercase tracking-widest mb-2">
+                  Idiomas
+                </p>
+                <div className="flex items-center gap-3">
+                  <span className="font-body text-white/90 text-sm">Español</span>
+                  <span className="text-slate-muted text-xs">Nativo</span>
+                  <span className="mx-2 text-ink-border">·</span>
+                  <span className="font-body text-white/90 text-sm">Inglés</span>
+                  <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
+                    B2
+                  </span>
                 </div>
               </div>
-            ))}
+              <div className="h-px bg-ink-border" />
+              <div>
+                <p className="text-xs font-body text-slate-muted uppercase tracking-widest mb-2">
+                  Área de interés
+                </p>
+                <p className="font-body text-slate-text text-sm leading-relaxed">
+                  IA aplicada · Desarrollo Full-Stack · Liderazgo técnico
+                </p>
+              </div>
+            </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-3 mt-1">
+            <div className="grid grid-cols-3 gap-3">
               {[
-                { n: "6°", label: "Semestre" },
-                { n: "2", label: "Certificados" },
-                { n: "7+", label: "Tecnologías" },
+                { n: "4+", label: "Certificados" },
+                { n: "8+", label: "Tecnologías" },
+                { n: "360°", label: "Perfil técnico" },
               ].map((s) => (
                 <div
                   key={s.label}
@@ -236,10 +309,10 @@ function About() {
 function Skills() {
   return (
     <section id="habilidades" className="relative py-28 px-6 border-t border-ink-border/50">
-      {/* Background tint */}
       <div className="absolute inset-0 bg-gradient-to-b from-ink-card/30 to-transparent pointer-events-none" />
 
       <div className="relative max-w-5xl mx-auto">
+        {/* Header */}
         <div className="text-center mb-16 reveal">
           <p className="font-body text-xs text-blue-glow tracking-widest uppercase mb-4 font-medium">
             002 — Habilidades
@@ -251,48 +324,86 @@ function Skills() {
           </h2>
         </div>
 
-        {/* Skills grid */}
-        <div className="grid sm:grid-cols-2 gap-5 mb-12 stagger-children">
-          {skills.map((skill) => (
+        {/* Technical skills */}
+        <h3 className="font-body text-xs text-slate-muted uppercase tracking-widest mb-6 reveal">
+          Habilidades Técnicas
+        </h3>
+        <div className="grid sm:grid-cols-2 gap-5 mb-16 stagger-children">
+          {technicalSkills.map((skill) => (
             <div
               key={skill.name}
               className="reveal card-hover p-5 rounded-2xl border border-ink-border bg-ink-card group"
             >
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3 flex-wrap">
                   <span
-                    className={`text-[10px] font-body font-medium px-2 py-0.5 rounded-full border ${categoryColors[skill.category] ?? "bg-blue-primary/10 text-blue-glow border-blue-primary/20"}`}
+                    className={`text-[10px] font-body font-medium px-2 py-0.5 rounded-full border ${
+                      categoryColors[skill.category] ??
+                      "bg-blue-primary/10 text-blue-glow border-blue-primary/20"
+                    }`}
                   >
                     {skill.category}
                   </span>
                   <span className="text-sm font-body font-medium text-white/90">{skill.name}</span>
                 </div>
-                <span className="text-xs font-body text-slate-muted">{skill.level}%</span>
-              </div>
-
-              {/* Progress bar */}
-              <div className="h-1.5 w-full rounded-full bg-ink-border overflow-hidden">
-                <div
-                  className="skill-bar-fill h-full rounded-full bg-gradient-to-r from-blue-primary to-blue-glow transition-all duration-1000 ease-out"
-                  style={{ width: `${skill.level}%` }}
-                />
+                <span className="text-[10px] font-body px-2 py-0.5 rounded-full bg-ink-border text-slate-muted shrink-0">
+                  {skill.label}
+                </span>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Approach callout */}
-        <div className="reveal p-8 rounded-3xl border border-blue-primary/20 bg-blue-primary/5 backdrop-blur-sm text-center">
-          <p className="font-display text-2xl sm:text-3xl font-light text-white/90 leading-relaxed">
-            "Mi enfoque profesional combina{" "}
-            <span className="italic text-gradient">precisión técnica</span>{" "}
-            con{" "}
-            <span className="italic text-gradient">metodología ágil</span>
-            — entregando software de calidad en equipo."
+        {/* Soft skills */}
+        <h3 className="font-body text-xs text-slate-muted uppercase tracking-widest mb-6 reveal">
+          Habilidades Blandas
+        </h3>
+        <div className="reveal grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-16 stagger-children">
+          {softSkills.map((skill) => (
+            <div
+              key={skill.name}
+              className="card-hover flex flex-col items-center gap-2 p-4 rounded-2xl border border-ink-border bg-ink-card text-center"
+            >
+              <span className="text-blue-glow text-sm">{skill.icon}</span>
+              <span className="text-xs font-body text-slate-text leading-snug">{skill.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Certifications ───────────────────────────────────────────────────────────
+
+function Certifications() {
+  return (
+    <section id="certificados" className="relative py-28 px-6 border-t border-ink-border/50">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-16 reveal">
+          <p className="font-body text-xs text-blue-glow tracking-widest uppercase mb-4 font-medium">
+            003 — Certificaciones
           </p>
-          <p className="font-body text-xs text-slate-muted mt-5 tracking-widest uppercase">
-            Alejandro Arana Fernández
-          </p>
+          <div className="divider mx-auto mb-6" />
+          <h2 className="font-display text-4xl sm:text-5xl font-light leading-tight">
+            Formación{" "}
+            <span className="italic text-gradient">verificada</span>
+          </h2>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 stagger-children">
+          {certifications.map((cert) => (
+            <div
+              key={cert.title}
+              className={`reveal card-hover p-6 rounded-2xl border bg-gradient-to-br ${cert.color}`}
+            >
+              <div className="text-2xl mb-4 font-body font-light">{cert.icon}</div>
+              <p className="font-body font-medium text-white/90 text-sm mb-1 leading-snug">
+                {cert.title}
+              </p>
+              <p className="font-body text-xs text-slate-muted">{cert.issuer}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -306,19 +417,15 @@ function Contact() {
     <section id="contacto" className="relative py-28 px-6 border-t border-ink-border/50">
       <div className="max-w-2xl mx-auto text-center reveal">
         <p className="font-body text-xs text-blue-glow tracking-widest uppercase mb-4 font-medium">
-          003 — Contacto
+          004 — Contacto
         </p>
         <div className="divider mx-auto mb-6" />
-        <h2 className="font-display text-4xl sm:text-5xl font-light leading-tight mb-5">
-          ¿Trabajamos<br />
-          <span className="italic text-gradient">juntos?</span>
-        </h2>
+    
         <p className="font-body text-slate-text font-light leading-relaxed mb-12">
           Estoy abierto a proyectos académicos, colaboraciones técnicas
           y oportunidades de prácticas profesionales.
         </p>
 
-        {/* Email card */}
         <a
           href="mailto:alejandro.arana@estudiantesunibague.edu.co"
           className="group inline-flex items-center gap-4 p-6 rounded-2xl border border-ink-border bg-ink-card hover:border-blue-primary/40 hover:bg-blue-primary/5 transition-all duration-300 w-full max-w-md"
@@ -340,7 +447,6 @@ function Contact() {
           </svg>
         </a>
 
-        {/* Location */}
         <div className="mt-6 flex items-center justify-center gap-2 text-xs font-body text-slate-muted">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
@@ -387,6 +493,7 @@ export default function Home() {
       <Hero />
       <About />
       <Skills />
+      <Certifications />
       <Contact />
       <Footer />
     </main>

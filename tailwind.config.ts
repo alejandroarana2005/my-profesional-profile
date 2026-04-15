@@ -6,6 +6,16 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    { pattern: /bg-(amber|cyan|violet|emerald|fuchsia|orange|pink|rose)-500\/10/ },
+    { pattern: /text-(amber|cyan|violet|emerald|fuchsia|orange|pink|rose)-400/ },
+    { pattern: /border-(amber|cyan|violet|emerald|fuchsia|orange|pink|rose)-500\/25/ },
+    // Para las certificaciones:
+    { pattern: /from-(rose|amber|blue|emerald)-500\/20/ },
+    { pattern: /to-(rose|amber|blue|emerald)-500\/5/ },
+    { pattern: /border-(rose|amber|blue|emerald)-500\/25/ },
+    { pattern: /text-(rose|amber|blue|emerald)-400/ },
+  ],
   theme: {
     extend: {
       fontFamily: {
@@ -24,8 +34,8 @@ const config: Config = {
           subtle: "#1D3461",
         },
         slate: {
-          text: "#94A3B8",
-          muted: "#475569",
+          text: "#CBD5E1",
+          muted: "#64748B",
         },
       },
       backgroundImage: {
